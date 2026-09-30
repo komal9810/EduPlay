@@ -109,60 +109,60 @@ export const ProgressView: React.FC<ProgressProps> = ({
       </div>
 
       {/* Game Performance Chart */}
-      <div className="clay-card p-6 sm:p-8 space-y-6">
+      <div className="clay-card p-4 sm:p-8 space-y-4 sm:space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <div className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-blue-600" />
-              <h2 className="text-lg sm:text-xl font-bold text-slate-800">
+              <h2 className="text-base sm:text-xl font-bold text-slate-800">
                 Game Performance
               </h2>
             </div>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5">
               Recent Banana Catch scores and answering accuracy trend
             </p>
           </div>
 
-          <span className="text-xs font-semibold text-slate-400 bg-slate-50 px-3 py-1 rounded-xl border border-slate-200">
+          <span className="text-[11px] sm:text-xs font-semibold text-slate-400 bg-slate-50 px-2.5 py-1 rounded-xl border border-slate-200 self-start sm:self-auto">
             Target Passing Score: 30 / 50 (60%)
           </span>
         </div>
 
         {recentGames.length === 0 ? (
-          <div className="h-48 flex flex-col items-center justify-center text-slate-400 bg-slate-50/70 rounded-2xl border border-dashed border-slate-200 p-6 text-center">
-            <Gamepad2 className="w-10 h-10 stroke-1 text-slate-300 mb-2" />
-            <p className="text-sm font-semibold text-slate-600">No game sessions logged yet</p>
-            <p className="text-xs text-slate-400 mt-0.5">
+          <div className="h-44 sm:h-48 flex flex-col items-center justify-center text-slate-400 bg-slate-50/70 rounded-2xl border border-dashed border-slate-200 p-4 sm:p-6 text-center">
+            <Gamepad2 className="w-8 h-8 sm:w-10 sm:h-10 stroke-1 text-slate-300 mb-2" />
+            <p className="text-xs sm:text-sm font-semibold text-slate-600">No game sessions logged yet</p>
+            <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5">
               Play a round of Banana Catch to generate your performance telemetry chart!
             </p>
           </div>
         ) : (
           <div className="space-y-4">
             {/* Custom SVG Bar Chart */}
-            <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/80">
-              <div className="h-52 flex items-end justify-around gap-2 sm:gap-6 pt-6 pb-2 px-2">
+            <div className="bg-slate-50/80 p-3 sm:p-5 rounded-2xl border border-slate-200/80 overflow-x-hidden">
+              <div className="h-48 sm:h-52 flex items-end justify-around gap-1.5 sm:gap-6 pt-5 pb-2 px-1">
                 {recentGames.map((game, index) => {
                   const heightPercent = Math.max(15, Math.round((game.score / maxScore) * 100));
                   const isPassing = game.accuracy >= 60;
                   return (
-                    <div key={index} className="flex-1 flex flex-col items-center gap-2 group">
-                      <span className="text-[11px] font-bold text-slate-700 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div key={index} className="flex-1 flex flex-col items-center gap-1.5 sm:gap-2 group min-w-0">
+                      <span className="text-[9px] sm:text-[11px] font-bold text-slate-700 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                         {game.score} pts
                       </span>
-                      <div className="w-full max-w-[48px] bg-slate-200 rounded-t-xl overflow-hidden clay-inset relative">
+                      <div className="w-full max-w-[36px] sm:max-w-[48px] bg-slate-200 rounded-t-xl overflow-hidden clay-inset relative">
                         <div
                           className={`w-full rounded-t-xl transition-all duration-700 ease-out ${
                             isPassing
                               ? 'bg-gradient-to-t from-emerald-500 to-teal-400'
                               : 'bg-gradient-to-t from-amber-500 to-orange-400'
                           }`}
-                          style={{ height: `${heightPercent * 1.8}px` }}
+                          style={{ height: `${heightPercent * 1.6}px` }}
                         />
                       </div>
-                      <span className="text-[10px] font-bold text-slate-500 truncate max-w-[60px]">
-                        Session {index + 1}
+                      <span className="text-[9px] sm:text-[10px] font-bold text-slate-500 truncate max-w-full">
+                        S{index + 1}
                       </span>
-                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+                      <span className={`text-[9px] sm:text-[10px] font-bold px-1 sm:px-1.5 py-0.5 rounded-full ${
                         isPassing ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
                       }`}>
                         {game.accuracy}%

@@ -55,22 +55,22 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onNavigateToLogin }) 
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] flex flex-col justify-center items-center p-4">
+    <div className="min-h-screen bg-[#F8F9FA] flex flex-col justify-center items-center p-3.5 sm:p-4 py-6 sm:py-10">
       {/* Platform Branding */}
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-3xl bg-blue-500 text-white text-3xl shadow-lg shadow-blue-200 mb-4">
+      <div className="text-center mb-6 sm:mb-8">
+        <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-blue-500 text-white text-2xl sm:text-3xl shadow-lg shadow-blue-200 mb-3 sm:mb-4">
           🎓
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
+        <h1 className="text-xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
           EduPlay – UnityLearn
         </h1>
-        <p className="text-sm text-slate-500 mt-1 font-medium">
+        <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
           Create your student account to start learning & playing
         </p>
       </div>
 
       {/* Main Signup Clay Card */}
-      <div className="clay-card w-full max-w-md p-6 sm:p-8">
+      <div className="clay-card w-full max-w-md p-5 sm:p-8">
         <div className="mb-6">
           <h2 className="text-xl font-bold text-slate-800">Student Registration</h2>
           <p className="text-xs text-slate-500 mt-1">

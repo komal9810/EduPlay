@@ -44,24 +44,24 @@ export const StatCard: React.FC<StatCardProps> = ({
   }[colorScheme];
 
   return (
-    <div className="clay-card p-5 relative overflow-hidden flex flex-col justify-between group">
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+    <div className="clay-card p-3.5 sm:p-5 rounded-2xl relative overflow-hidden flex flex-col justify-between group">
+      <div className="flex items-center justify-between mb-2 sm:mb-3">
+        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 truncate mr-1">
           {label}
         </span>
-        <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shadow-md ${schemeStyles.iconBg}`}>
-          <Icon className="w-5 h-5 stroke-[2.2]" />
+        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-md shrink-0 ${schemeStyles.iconBg}`}>
+          <Icon className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
         </div>
       </div>
 
       <div>
-        <div className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
+        <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-slate-800 tracking-tight">
           {value}
         </div>
         {trend && (
-          <div className="mt-1.5 flex items-center text-xs font-semibold text-slate-500">
-            <span className="text-emerald-600 font-bold mr-1">✦</span>
-            {trend}
+          <div className="mt-1 flex items-center text-[10px] sm:text-xs font-semibold text-slate-500 truncate">
+            <span className="text-emerald-600 font-bold mr-1 shrink-0">✦</span>
+            <span className="truncate">{trend}</span>
           </div>
         )}
       </div>

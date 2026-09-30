@@ -281,53 +281,53 @@ export const BananaCatch: React.FC<BananaCatchProps> = ({
   return (
     <div className="max-w-4xl mx-auto space-y-4 animate-in fade-in duration-300">
       {/* Top Bar Navigation & Info */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5">
         <button
           onClick={onBack}
-          className="clay-btn bg-white hover:bg-slate-50 text-slate-700 px-3.5 py-2 text-xs font-bold flex items-center gap-2"
+          className="clay-btn bg-white hover:bg-slate-50 text-slate-700 px-3 py-1.5 text-xs font-bold flex items-center gap-1.5"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Exit Game</span>
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Exit</span>
         </button>
 
-        <div className="flex items-center gap-4 text-xs font-bold text-slate-700">
-          <div className="flex items-center gap-1.5 bg-rose-50 border border-rose-200 text-rose-700 px-3 py-1.5 rounded-xl">
+        <div className="flex items-center gap-2 sm:gap-4 text-xs font-bold text-slate-700">
+          <div className="flex items-center gap-1 bg-rose-50 border border-rose-200 text-rose-700 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl">
             <div className="flex gap-0.5">
               {[...Array(3)].map((_, i) => (
                 <Heart
                   key={i}
-                  className={`w-4 h-4 ${i < lives ? 'fill-rose-500 text-rose-500' : 'text-slate-300'}`}
+                  className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${i < lives ? 'fill-rose-500 text-rose-500' : 'text-slate-300'}`}
                 />
               ))}
             </div>
-            <span>Lives</span>
+            <span className="hidden sm:inline">Lives</span>
           </div>
 
-          <div className="flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-800 px-3 py-1.5 rounded-xl">
-            <Timer className="w-4 h-4 text-blue-600" />
+          <div className="flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-800 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl">
+            <Timer className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600" />
             <span>{gameTimeLeft}s</span>
           </div>
 
-          <div className="flex items-center gap-1.5 bg-amber-50 border border-amber-200 text-amber-800 px-3 py-1.5 rounded-xl">
-            <Zap className="w-4 h-4 fill-amber-500 text-amber-600" />
+          <div className="flex items-center gap-1 bg-amber-50 border border-amber-200 text-amber-800 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl">
+            <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-500 text-amber-600" />
             <span>{score} Score</span>
           </div>
         </div>
       </div>
 
       {!isGameOver ? (
-        <div className="clay-card-cream p-4 sm:p-6 space-y-4">
+        <div className="clay-card-cream p-3 sm:p-5 md:p-6 space-y-3 sm:space-y-4">
           {/* Question Banner */}
-          <div className="bg-white/90 p-4 rounded-2xl border border-amber-200/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          <div className="bg-white/95 p-3 sm:p-4 rounded-2xl border border-amber-200/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-md">
+              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-md">
                 Question {currentQIndex + 1} of {questions.length}
               </span>
               <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-1">
                 {currentQuestion?.question}
               </h2>
             </div>
-            <div className="text-xs text-slate-500 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-100">
+            <div className="text-[11px] sm:text-xs text-slate-500 bg-amber-50 px-2.5 py-1 rounded-xl border border-amber-100">
               Catch the banana with the <strong>correct answer</strong>!
             </div>
           </div>
@@ -336,7 +336,7 @@ export const BananaCatch: React.FC<BananaCatchProps> = ({
           <div
             ref={containerRef}
             onPointerMove={handleContainerPointerMove}
-            className="relative w-full h-[380px] sm:h-[420px] bg-gradient-to-b from-sky-100 via-amber-50/50 to-emerald-100 rounded-3xl overflow-hidden border-2 border-amber-200/70 clay-inset cursor-ew-resize select-none"
+            className="relative w-full h-[280px] sm:h-[350px] md:h-[400px] bg-gradient-to-b from-sky-100 via-amber-50/50 to-emerald-100 rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-amber-200/70 clay-inset cursor-ew-resize select-none touch-none"
           >
             {/* Background elements */}
             <div className="absolute top-4 left-6 text-2xl opacity-40">☁️</div>
@@ -398,25 +398,27 @@ export const BananaCatch: React.FC<BananaCatchProps> = ({
           </div>
 
           {/* On-Screen Mobile / Click Controls */}
-          <div className="flex items-center justify-between gap-3 pt-2">
+          <div className="flex items-center justify-between gap-2.5 pt-1">
             <button
+              type="button"
               onClick={() => setMonkeyX(prev => Math.max(8, prev - 12))}
-              className="clay-btn bg-white hover:bg-slate-50 text-slate-700 px-5 py-3 text-xs sm:text-sm font-bold flex-1 flex items-center justify-center gap-1.5"
+              className="clay-btn bg-white active:bg-blue-50 text-slate-800 py-3.5 sm:py-3 px-4 text-xs sm:text-sm font-extrabold flex-1 flex items-center justify-center gap-1.5 shadow-md"
             >
-              <ChevronLeft className="w-5 h-5" />
-              <span>Move Left (← / A)</span>
+              <ChevronLeft className="w-5 h-5 text-blue-600 shrink-0" />
+              <span>Left (← / A)</span>
             </button>
 
-            <span className="text-[11px] font-semibold text-slate-400 hidden sm:inline">
-              Drag mouse or press Arrow Keys
+            <span className="text-[11px] font-semibold text-slate-400 hidden md:inline px-2 text-center">
+              Drag or use Arrow keys
             </span>
 
             <button
+              type="button"
               onClick={() => setMonkeyX(prev => Math.min(92, prev + 12))}
-              className="clay-btn bg-white hover:bg-slate-50 text-slate-700 px-5 py-3 text-xs sm:text-sm font-bold flex-1 flex items-center justify-center gap-1.5"
+              className="clay-btn bg-white active:bg-blue-50 text-slate-800 py-3.5 sm:py-3 px-4 text-xs sm:text-sm font-extrabold flex-1 flex items-center justify-center gap-1.5 shadow-md"
             >
-              <span>Move Right (→ / D)</span>
-              <ChevronRight className="w-5 h-5" />
+              <span>Right (→ / D)</span>
+              <ChevronRight className="w-5 h-5 text-blue-600 shrink-0" />
             </button>
           </div>
         </div>
