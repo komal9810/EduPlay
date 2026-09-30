@@ -1,13 +1,24 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
-import firebaseConfig from '../../firebase-applet-config.json';
+import rawAppletConfig from '../../firebase-applet-config.json';
+
+// Support VITE_ environment variables (Vercel standard) with fallback to local config
+const resolvedConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || rawAppletConfig.apiKey,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || rawAppletConfig.authDomain,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || rawAppletConfig.projectId,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || rawAppletConfig.storageBucket,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || rawAppletConfig.messagingSenderId,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || rawAppletConfig.appId,
+  firestoreDatabaseId: import.meta.env.VITE_FIREBASE_DATABASE_ID || rawAppletConfig.firestoreDatabaseId,
+};
 
 // Initialize Firebase App
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(resolvedConfig);
 
 // CRITICAL: Initialize Firestore with explicit database ID
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+export const db = getFirestore(app, resolvedConfig.firestoreDatabaseId);
 
 // Initialize Firebase Authentication
 export const auth = getAuth(app);
