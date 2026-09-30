@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { logInWithEmail, signInWithGoogle, loginAsDemoStudent, getFriendlyErrorMessage } from '../services/authService';
+import {
+  logInWithEmail,
+  signInWithGoogle,
+  loginAsDemoStudent,
+  getFriendlyErrorMessage,
+  isGoogleAuthSupportedOnCurrentDomain
+} from '../services/authService';
 import { Lock, Mail, ArrowRight, Sparkles, AlertCircle, ShieldCheck } from 'lucide-react';
 
 interface LoginProps {
@@ -13,6 +19,8 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onNavigateToSignup, onB
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const isGoogleSupported = isGoogleAuthSupportedOnCurrentDomain();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,6 +58,10 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onNavigateToSignup, onB
   };
 
   const handleGoogleLogin = async () => {
+    if (!isGoogleSupported) {
+      setError('Google Sign-In is restricted to the development/AI Studio domain on the Starter tier. Please use Email/Password or click "Instant Demo Student" to log in immediately!');
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -61,6 +73,11 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onNavigateToSignup, onB
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleFillSample = () => {
+    setEmail('student@example.com');
+    setPassword('student123');
   };
 
   return (
@@ -96,18 +113,70 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onNavigateToSignup, onB
           </p>
         </div>
 
+        {/* 1-Click Instant Demo Login Banner (Perfect for Vercel) */}
+        <div className="mb-6 p-4 rounded-2xl bg-gradient-to-br from-amber-50 via-orange-50/60 to-amber-100/40 border border-amber-200/90 shadow-sm">
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="text-xs font-black uppercase text-amber-900 flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-amber-600 fill-amber-500" />
+              Instant 1-Click Demo Login
+            </span>
+            <span className="text-[10px] font-bold bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full">
+              Works on Vercel
+            </span>
+          </div>
+          <p className="text-xs text-slate-600 mb-3">
+            Open the full student platform as <strong>Komal</strong> with active levels, Firestore syncing, and lessons loaded.
+          </p>
+          <button
+            type="button"
+            onClick={handleDemoLogin}
+            disabled={loading}
+            className="w-full clay-btn clay-btn-peach py-2.5 px-4 text-xs font-bold text-white flex items-center justify-center gap-2 shadow-sm"
+          >
+            <Sparkles className="w-4 h-4 fill-white" />
+            <span>Launch as Komal (No Password Needed)</span>
+          </button>
+        </div>
+
         {error && (
-          <div className="mb-5 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
-            <span>{error}</span>
+          <div className="mb-5 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs space-y-2">
+            <div className="flex items-start gap-2.5">
+              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+              <div className="flex-1 font-medium">{error}</div>
+            </div>
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              className="clay-btn bg-white hover:bg-slate-50 text-slate-800 px-3 py-1.5 rounded-xl font-bold text-xs border border-rose-200 w-full text-center"
+            >
+              Click here to Enter as Demo Student Instead →
+            </button>
           </div>
         )}
 
+        <div className="relative my-5 text-center">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-slate-200" />
+          </div>
+          <span className="relative bg-white px-3 text-xs font-semibold text-slate-400">
+            OR SIGN IN WITH EMAIL
+          </span>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-              Email Address
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600">
+                Email Address
+              </label>
+              <button
+                type="button"
+                onClick={handleFillSample}
+                className="text-[11px] font-bold text-blue-600 hover:text-blue-700 underline"
+              >
+                Auto-fill Sample
+              </button>
+            </div>
             <div className="relative">
               <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
@@ -147,40 +216,24 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onNavigateToSignup, onB
               <span>Logging in...</span>
             ) : (
               <>
-                <span>Sign In</span>
+                <span>Sign In with Email</span>
                 <ArrowRight className="w-4 h-4" />
               </>
             )}
           </button>
         </form>
 
-        <div className="relative my-6 text-center">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-200" />
-          </div>
-          <span className="relative bg-white px-3 text-xs font-semibold text-slate-400">
-            OR TEST DEMO STUDENT
-          </span>
-        </div>
-
-        <div className="space-y-2.5">
-          {/* Quick Demo Student Mode */}
-          <button
-            type="button"
-            onClick={handleDemoLogin}
-            disabled={loading}
-            className="w-full clay-btn bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 py-2.5 px-4 text-xs font-bold flex items-center justify-center gap-2"
-          >
-            <Sparkles className="w-4 h-4 text-amber-600" />
-            <span>Instant Demo Student ("Komal")</span>
-          </button>
-
+        <div className="space-y-2.5 mt-5">
           {/* Google Sign In */}
           <button
             type="button"
             onClick={handleGoogleLogin}
             disabled={loading}
-            className="w-full clay-btn bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 py-2.5 px-4 text-xs font-bold flex items-center justify-center gap-2"
+            className={`w-full clay-btn py-2.5 px-4 text-xs font-bold flex items-center justify-center gap-2 ${
+              isGoogleSupported
+                ? 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-200'
+                : 'bg-slate-50 text-slate-500 border border-slate-200'
+            }`}
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path
@@ -200,8 +253,17 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onNavigateToSignup, onB
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
               />
             </svg>
-            <span>Sign In with Google</span>
+            <span>
+              {isGoogleSupported
+                ? 'Sign In with Google'
+                : 'Google Sign-In (AI Studio Preview Only)'}
+            </span>
           </button>
+          {!isGoogleSupported && (
+            <p className="text-[10px] text-slate-400 text-center">
+              Google OAuth is disabled on Vercel by AI Studio Starter tier. Use 1-Click Demo or Email above.
+            </p>
+          )}
         </div>
 
         <div className="mt-6 text-center text-xs text-slate-500">

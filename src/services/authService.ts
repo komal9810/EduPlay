@@ -33,6 +33,18 @@ function notifyAuthListeners(user: AuthSessionUser | null) {
   });
 }
 
+export function isGoogleAuthSupportedOnCurrentDomain(): boolean {
+  if (typeof window === 'undefined') return true;
+  const host = window.location.hostname;
+  return (
+    host === 'localhost' ||
+    host === '127.0.0.1' ||
+    host.includes('run.app') ||
+    host.includes('firebaseapp.com') ||
+    host.includes('web.app')
+  );
+}
+
 export function getFriendlyErrorMessage(error: any): string {
   if (!error) return 'An unexpected error occurred. Please try again.';
   const code = error.code || '';
@@ -46,13 +58,16 @@ export function getFriendlyErrorMessage(error: any): string {
     case 'auth/user-not-found':
     case 'auth/wrong-password':
     case 'auth/invalid-credential':
-      return 'Invalid email or password. Please check your credentials.';
+      return 'Invalid email or password. Please check your credentials or create a new student account.';
     case 'auth/operation-not-allowed':
-      return 'Email/Password authentication is disabled in Firebase Console. Please use Google Sign-In or Quick Demo Student mode.';
+      return 'Email/Password authentication is disabled in Firebase Console. Please use Instant Demo Student mode.';
     case 'auth/popup-closed-by-user':
       return 'Sign-in popup was closed before completing authentication.';
     case 'auth/network-request-failed':
       return 'Network connection issue. Please check your internet connection.';
+    case 'auth/unauthorized-domain': {
+      return 'Google Sign-In is restricted on this Vercel domain by the AI Studio Starter tier. Please use Email/Password sign-in or click "Instant Demo Student" to log in immediately!';
+    }
     default:
       return error.message || 'Authentication failed. Please try again.';
   }
@@ -105,6 +120,12 @@ export async function logInWithEmail(email: string, pass: string): Promise<UserP
 
 // Sign in with Google
 export async function signInWithGoogle(): Promise<UserProfile> {
+  if (!isGoogleAuthSupportedOnCurrentDomain()) {
+    throw {
+      code: 'auth/unauthorized-domain',
+      message: 'Google Sign-In is restricted to the development/AI Studio domain on the Starter tier. Please use Email/Password or Instant Demo Student mode on Vercel.'
+    };
+  }
   const provider = new GoogleAuthProvider();
   const userCredential = await signInWithPopup(auth, provider);
   const fbUser = userCredential.user;

@@ -88,12 +88,55 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onNavigateToLogin, on
           </p>
         </div>
 
+        {/* 1-Click Instant Demo Login Banner (Perfect for Vercel) */}
+        <div className="mb-6 p-4 rounded-2xl bg-gradient-to-br from-amber-50 via-orange-50/60 to-amber-100/40 border border-amber-200/90 shadow-sm">
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="text-xs font-black uppercase text-amber-900 flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-amber-600 fill-amber-500" />
+              Instant 1-Click Demo Access
+            </span>
+            <span className="text-[10px] font-bold bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full">
+              Works on Vercel
+            </span>
+          </div>
+          <p className="text-xs text-slate-600 mb-3">
+            Skip registration and immediately launch as student <strong>Komal</strong> with active levels and games ready.
+          </p>
+          <button
+            type="button"
+            onClick={handleDemoLogin}
+            disabled={loading}
+            className="w-full clay-btn clay-btn-peach py-2.5 px-4 text-xs font-bold text-white flex items-center justify-center gap-2 shadow-sm"
+          >
+            <Sparkles className="w-4 h-4 fill-white" />
+            <span>Launch as Komal (Instant Access)</span>
+          </button>
+        </div>
+
         {error && (
-          <div className="mb-5 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
-            <span>{error}</span>
+          <div className="mb-5 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs space-y-2">
+            <div className="flex items-start gap-2.5">
+              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+              <div className="flex-1 font-medium">{error}</div>
+            </div>
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              className="clay-btn bg-white hover:bg-slate-50 text-slate-800 px-3 py-1.5 rounded-xl font-bold text-xs border border-rose-200 w-full text-center"
+            >
+              Enter as Demo Student Instead →
+            </button>
           </div>
         )}
+
+        <div className="relative my-5 text-center">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-slate-200" />
+          </div>
+          <span className="relative bg-white px-3 text-xs font-semibold text-slate-400">
+            OR REGISTER NEW STUDENT
+          </span>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

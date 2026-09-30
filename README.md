@@ -64,6 +64,26 @@ Under **Project Settings → Environment Variables** on Vercel, add the followin
 
 ---
 
+## 🔒 Fixing `Firebase: Error (auth/unauthorized-domain)`
+
+When deploying on Vercel (`https://edu-play-five.vercel.app`), Firebase Authentication security prevents unauthorized domains from executing OAuth / popup sign-ins until you allowlist the domain.
+
+### Steps to authorize your Vercel domain:
+1. Open the [Firebase Console](https://console.firebase.google.com/).
+2. Select your Firebase Project (`ai-studio-71248ccc-ce76-4fcc-8c10-069d96633e27` or your custom project).
+3. In the left navigation menu, go to **Build** → **Authentication**.
+4. Click on the **Settings** tab (next to "Sign-in method" and "Users").
+5. Scroll down to the **Authorized domains** section.
+6. Click **Add domain**.
+7. Enter your Vercel domain:
+   * `edu-play-five.vercel.app`
+   * *(Optional: Also add `vercel.app` for preview deployments)*
+8. Click **Save**.
+
+The domain will be active immediately, and login/sign-in popups on `https://edu-play-five.vercel.app/` will work seamlessly!
+
+---
+
 ## ⚙️ Configuration Files Added
 
 * `vercel.json`: Handles client-side SPA routing (`/(.*) → /index.html`) so sub-routes and deep links do not return 404s.
