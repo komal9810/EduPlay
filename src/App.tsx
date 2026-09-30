@@ -20,6 +20,7 @@ import { Sidebar, NavTab } from './components/Sidebar';
 import { Navbar } from './components/Navbar';
 import { FutureScopeModal } from './components/FutureScopeModal';
 
+import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 import { Signup } from './pages/Signup';
 import { Dashboard } from './pages/Dashboard';
@@ -34,7 +35,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState<AuthSessionUser | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
-  const [authView, setAuthView] = useState<'login' | 'signup'>('login');
+  const [authView, setAuthView] = useState<'home' | 'login' | 'signup'>('home');
 
   const [currentTab, setCurrentTab] = useState<NavTab>('dashboard');
   const [lessons, setLessons] = useState<Lesson[]>(INITIAL_LESSONS);
@@ -118,6 +119,7 @@ export default function App() {
       setActiveLesson(null);
       setActiveGameId(null);
       setCurrentTab('dashboard');
+      setAuthView('home');
     } catch (err) {
       console.error('Logout error:', err);
     }
@@ -152,20 +154,49 @@ export default function App() {
     );
   }
 
-  // Unauthenticated: Show Login or Signup (Protected routes per Section 3)
+  // Unauthenticated: Show Home, Login, or Signup
   if (!currentUser || !userProfile) {
+    if (authView === 'home') {
+      return (
+        <>
+          <Home
+            onNavigateToLogin={() => setAuthView('login')}
+            onNavigateToSignup={() => setAuthView('signup')}
+            onQuickDemo={async () => {
+              setIsLoadingData(true);
+              try {
+                await loginAsDemoStudent(true);
+              } catch (e) {
+                console.error('Demo error:', e);
+              } finally {
+                setIsLoadingData(false);
+              }
+            }}
+            onOpenFutureScope={() => setIsFutureScopeOpen(true)}
+          />
+          <FutureScopeModal
+            isOpen={isFutureScopeOpen}
+            onClose={() => setIsFutureScopeOpen(false)}
+          />
+        </>
+      );
+    }
+
     if (authView === 'signup') {
       return (
         <Signup
           onSuccess={() => setAuthView('login')}
           onNavigateToLogin={() => setAuthView('login')}
+          onBackToHome={() => setAuthView('home')}
         />
       );
     }
+
     return (
       <Login
         onSuccess={() => {}}
         onNavigateToSignup={() => setAuthView('signup')}
+        onBackToHome={() => setAuthView('home')}
       />
     );
   }

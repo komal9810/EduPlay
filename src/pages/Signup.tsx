@@ -5,9 +5,10 @@ import { User, Mail, Lock, ArrowRight, AlertCircle, Sparkles } from 'lucide-reac
 interface SignupProps {
   onSuccess: () => void;
   onNavigateToLogin: () => void;
+  onBackToHome?: () => void;
 }
 
-export const Signup: React.FC<SignupProps> = ({ onSuccess, onNavigateToLogin }) => {
+export const Signup: React.FC<SignupProps> = ({ onSuccess, onNavigateToLogin, onBackToHome }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -55,7 +56,16 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onNavigateToLogin }) 
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] flex flex-col justify-center items-center p-3.5 sm:p-4 py-6 sm:py-10">
+    <div className="min-h-screen bg-[#F8F9FA] flex flex-col justify-center items-center p-3.5 sm:p-4 py-6 sm:py-10 relative">
+      {onBackToHome && (
+        <button
+          onClick={onBackToHome}
+          className="absolute top-4 left-4 sm:top-6 sm:left-6 clay-btn bg-white hover:bg-slate-50 text-slate-700 px-3.5 py-1.5 text-xs font-bold flex items-center gap-1.5"
+        >
+          <span>← Back to Home</span>
+        </button>
+      )}
+
       {/* Platform Branding */}
       <div className="text-center mb-6 sm:mb-8">
         <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-3xl bg-blue-500 text-white text-2xl sm:text-3xl shadow-lg shadow-blue-200 mb-3 sm:mb-4">
