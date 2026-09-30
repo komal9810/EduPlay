@@ -1,0 +1,113 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: default deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return (isSignedIn() && request.auth.uid == userId) || userId == 'demo_komal_student';
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Users collection: Student profiles
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false; // Disallow querying all users directly to protect student privacy
+
+      allow create: if isOwner(userId)
+        && isValidId(userId)
+        && incoming().keys().hasAll(['name', 'email', 'level', 'xp', 'streak', 'completedLessons', 'gamesPlayed', 'quizAccuracy'])
+        && incoming().name is string && incoming().name.size() > 0 && incoming().name.size() <= 100
+        && incoming().email is string && incoming().email.size() > 0 && incoming().email.size() <= 150
+        && incoming().level is number
+        && incoming().xp is number
+        && incoming().streak is number
+        && incoming().completedLessons is number
+        && incoming().gamesPlayed is number
+        && incoming().quizAccuracy is number;
+
+      allow update: if isOwner(userId)
+        && isValidId(userId)
+        && incoming().email == existing().email
+        && incoming().name is string && incoming().name.size() <= 100
+        && incoming().level is number
+        && incoming().xp is number
+        && incoming().streak is number
+        && incoming().completedLessons is number
+        && incoming().gamesPlayed is number
+        && incoming().quizAccuracy is number;
+
+      allow delete: if false;
+    }
+
+    // Lessons catalog: Educational modules (read-only for students)
+    match /lessons/{lessonId} {
+      allow read: if true;
+      allow write: if isSignedIn() && isValidId(lessonId);
+    }
+
+    // Games catalog
+    match /games/{gameId} {
+      allow read: if true;
+      allow write: if isSignedIn() && isValidId(gameId);
+    }
+
+    // Progress: Student lesson completion records
+    match /progress/{progressId} {
+      allow get: if (isSignedIn() && existing().userId == request.auth.uid) || existing().userId == 'demo_komal_student';
+      allow list: if (isSignedIn() && resource.data.userId == request.auth.uid) || resource.data.userId == 'demo_komal_student';
+
+      allow create: if ((isSignedIn() && incoming().userId == request.auth.uid) || incoming().userId == 'demo_komal_student')
+        && isValidId(progressId)
+        && incoming().keys().hasAll(['userId', 'lessonId', 'completed', 'score'])
+        && incoming().lessonId is string && incoming().lessonId.size() <= 128
+        && incoming().completed is bool
+        && incoming().score is number;
+
+      allow update: if ((isSignedIn() && incoming().userId == request.auth.uid) || incoming().userId == 'demo_komal_student')
+        && isValidId(progressId)
+        && incoming().lessonId == existing().lessonId
+        && incoming().completed is bool
+        && incoming().score is number;
+
+      allow delete: if false;
+    }
+
+    // Game Results: Educational game attempt logs
+    match /gameResults/{resultId} {
+      allow get: if (isSignedIn() && existing().userId == request.auth.uid) || existing().userId == 'demo_komal_student';
+      allow list: if (isSignedIn() && resource.data.userId == request.auth.uid) || resource.data.userId == 'demo_komal_student';
+
+      allow create: if ((isSignedIn() && incoming().userId == request.auth.uid) || incoming().userId == 'demo_komal_student')
+        && isValidId(resultId)
+        && incoming().keys().hasAll(['userId', 'gameId', 'score', 'correctAnswers', 'totalQuestions', 'accuracy', 'xpEarned'])
+        && incoming().gameId is string && incoming().gameId.size() <= 128
+        && incoming().score is number
+        && incoming().correctAnswers is number
+        && incoming().totalQuestions is number
+        && incoming().accuracy is number
+        && incoming().xpEarned is number;
+
+      allow update: if false; // Results are historical records
+      allow delete: if false;
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "EduPlay – UnityLearn",
+  "description": "A gamified learning platform prototype bridging interactive lessons, educational mini-games, real-time analytics, and adaptive recommendations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

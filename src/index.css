@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    background-color: #F8F9FA;
+    color: #2D3748;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Claymorphism Design System */
+.clay-card {
+  background-color: #FFFFFF;
+  border-radius: 1.5rem;
+  box-shadow: 8px 8px 20px rgba(160, 175, 200, 0.18), -8px -8px 20px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.clay-card:hover {
+  box-shadow: 10px 10px 24px rgba(160, 175, 200, 0.22), -10px -10px 24px rgba(255, 255, 255, 0.95);
+  transform: translateY(-2px);
+}
+
+.clay-card-flat {
+  background-color: #FFFFFF;
+  border-radius: 1.25rem;
+  box-shadow: 5px 5px 14px rgba(160, 175, 200, 0.15), -5px -5px 14px rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.clay-card-cream {
+  background-color: #FFFDF9;
+  border-radius: 1.5rem;
+  box-shadow: 7px 7px 18px rgba(214, 205, 185, 0.25), -7px -7px 18px rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.clay-card-blue {
+  background-color: #F0F6FF;
+  border-radius: 1.5rem;
+  box-shadow: 7px 7px 18px rgba(176, 198, 227, 0.3), -7px -7px 18px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.clay-card-green {
+  background-color: #F0FDF4;
+  border-radius: 1.5rem;
+  box-shadow: 7px 7px 18px rgba(187, 222, 200, 0.3), -7px -7px 18px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.clay-card-peach {
+  background-color: #FFF7ED;
+  border-radius: 1.5rem;
+  box-shadow: 7px 7px 18px rgba(235, 205, 175, 0.3), -7px -7px 18px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.clay-card-lavender {
+  background-color: #F8F5FF;
+  border-radius: 1.5rem;
+  box-shadow: 7px 7px 18px rgba(206, 195, 230, 0.3), -7px -7px 18px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+/* Clay Button Styles */
+.clay-btn {
+  border-radius: 1rem;
+  font-weight: 600;
+  box-shadow: 4px 4px 10px rgba(160, 175, 200, 0.25), -4px -4px 10px rgba(255, 255, 255, 0.9), inset 1px 1px 2px rgba(255, 255, 255, 0.6);
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.clay-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 5px 5px 12px rgba(160, 175, 200, 0.3), -5px -5px 12px rgba(255, 255, 255, 0.95);
+}
+
+.clay-btn:active {
+  transform: translateY(1px);
+  box-shadow: inset 3px 3px 6px rgba(160, 175, 200, 0.35), inset -3px -3px 6px rgba(255, 255, 255, 0.8);
+}
+
+.clay-btn-primary {
+  background-color: #4A90E2;
+  color: #FFFFFF;
+  box-shadow: 4px 4px 12px rgba(74, 144, 226, 0.35), -4px -4px 10px rgba(255, 255, 255, 0.8), inset 1px 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.clay-btn-primary:active {
+  box-shadow: inset 3px 3px 7px rgba(30, 80, 140, 0.4), inset -3px -3px 7px rgba(255, 255, 255, 0.3);
+}
+
+.clay-btn-green {
+  background-color: #48BB78;
+  color: #FFFFFF;
+  box-shadow: 4px 4px 12px rgba(72, 187, 120, 0.35), -4px -4px 10px rgba(255, 255, 255, 0.8), inset 1px 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.clay-btn-peach {
+  background-color: #F6AD55;
+  color: #FFFFFF;
+  box-shadow: 4px 4px 12px rgba(246, 173, 85, 0.35), -4px -4px 10px rgba(255, 255, 255, 0.8), inset 1px 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.clay-input {
+  background-color: #F4F6F9;
+  border-radius: 1rem;
+  border: 1px solid #E2E8F0;
+  box-shadow: inset 2px 2px 5px rgba(160, 175, 200, 0.15), inset -2px -2px 5px rgba(255, 255, 255, 0.8);
+  transition: all 0.2s ease;
+}
+
+.clay-input:focus {
+  outline: none;
+  border-color: #4A90E2;
+  box-shadow: inset 2px 2px 5px rgba(74, 144, 226, 0.2), 0 0 0 3px rgba(74, 144, 226, 0.15);
+}
+
+/* Badge & Progress Insets */
+.clay-inset {
+  box-shadow: inset 3px 3px 6px rgba(160, 175, 200, 0.2), inset -3px -3px 6px rgba(255, 255, 255, 0.8);
+}

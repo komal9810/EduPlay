@@ -1,0 +1,102 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Student profile holding gamification stats, level, XP, and learning progress",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 150 },
+        "level": { "type": "number" },
+        "xp": { "type": "number" },
+        "streak": { "type": "number" },
+        "completedLessons": { "type": "number" },
+        "gamesPlayed": { "type": "number" },
+        "quizAccuracy": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "email", "level", "xp", "streak", "completedLessons", "gamesPlayed", "quizAccuracy"]
+    },
+    "Lesson": {
+      "title": "Lesson",
+      "description": "Learning module content and quiz",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 150 },
+        "subject": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 300 },
+        "difficulty": { "type": "string", "maxLength": 50 },
+        "duration": { "type": "number" },
+        "content": { "type": "string", "maxLength": 2000 },
+        "example": { "type": "string", "maxLength": 1000 },
+        "quizQuestion": { "type": "string", "maxLength": 300 },
+        "quizAnswer": { "type": "number" },
+        "xpReward": { "type": "number" }
+      },
+      "required": ["title", "subject", "description", "difficulty", "duration"]
+    },
+    "Progress": {
+      "title": "Progress",
+      "description": "Student progress record for an individual lesson",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "lessonId": { "type": "string", "maxLength": 128 },
+        "completed": { "type": "boolean" },
+        "score": { "type": "number" },
+        "completedAt": { "type": "string" }
+      },
+      "required": ["userId", "lessonId", "completed", "score"]
+    },
+    "Game": {
+      "title": "Game",
+      "description": "Educational game metadata and parameters",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 100 },
+        "subject": { "type": "string", "maxLength": 100 },
+        "difficulty": { "type": "string", "maxLength": 50 },
+        "xpReward": { "type": "number" }
+      },
+      "required": ["title", "subject", "difficulty", "xpReward"]
+    },
+    "GameResult": {
+      "title": "GameResult",
+      "description": "Result record saved after a student completes a game",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "gameId": { "type": "string", "maxLength": 128 },
+        "score": { "type": "number" },
+        "correctAnswers": { "type": "number" },
+        "totalQuestions": { "type": "number" },
+        "accuracy": { "type": "number" },
+        "xpEarned": { "type": "number" },
+        "playedAt": { "type": "string" }
+      },
+      "required": ["userId", "gameId", "score", "correctAnswers", "totalQuestions", "accuracy", "xpEarned"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Student user profiles indexed by Auth UID"
+    },
+    "/lessons/{lessonId}": {
+      "schema": "Lesson",
+      "description": "Educational modules and lessons available to students"
+    },
+    "/progress/{progressId}": {
+      "schema": "Progress",
+      "description": "Lesson completion tracking records for each student"
+    },
+    "/games/{gameId}": {
+      "schema": "Game",
+      "description": "Catalog of educational mini-games"
+    },
+    "/gameResults/{resultId}": {
+      "schema": "GameResult",
+      "description": "Recorded outcomes of game sessions"
+    }
+  }
+}
